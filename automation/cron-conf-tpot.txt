@@ -1,0 +1,37 @@
+################################################
+Paso 3: Automatizar los Reportes (Cron)
+Finalmente, programaremos los scripts para que se ejecuten automáticamente. Usaremos el crontab de root para asegurarnos de que tenga los Permisos correctos.
+Conéctate por SSH a tu servidor, recuerda que ahora el puerto es el 64295.
+
+Ejecuta el siguiente comando para abrir el editor de crontab para el usuario root:
+sudo crontab -e  #<--- ESTE COMANDO
+(Si es la primera vez, selecciona nano como tu editor, suele ser la opción 2).
+Ve hasta el final del archivo y pega el siguiente bloque de texto tal cual:
+
+---------------------------------------------------------------------------------------------------------------------------
+# Ejecutar el reporte diario (todos los días a las 7:00 AM Lima -> 12:00 UTC) y guarda la salida en un log
+0 12 * * * /usr/bin/python3 /home/aws/aut/scripts-repo/script-diario.py > /home/aws/aut/scripts-repo/cron.log 2>&1
+
+# Ejecutar el reporte semanal (todos los Lunes a las 8:00 AM Lima -> 13:00 UTC) y guarda la salida en un log
+0 13 * * 1 /usr/bin/python3 /home/aws/aut/scripts-repo/script-semanal.py > /home/aws/aut/scripts-repo/cron.log 2>&1
+
+# Ejecutar el reporte mensual (Día 1 del mes a las 9:00 AM Lima -> 14:00 UTC) y guarda la salida en un log
+0 14 1 * * /usr/bin/python3 /home/aws/aut/scripts-repo/script-mensual.py > /home/aws/aut/scripts-repo/cron-mensual.log 2>&1
+----------------------------------------------------------------------------------------------------------------------------
+
+¡ADVERTENCIA! Si tu usuario no es ubuntu, asegúrate de cambiar las rutas /home/ubuntu/ para que coincidan con tu directorio home (ej. /home/aws/ o /home/sgmv/).
+Crea la carpeta de logs que acabamos de definir en el crontab (asegúrate de que la ruta coincida con el paso anterior):
+(Los comandos chown le dan permiso a tu usuario para escribir en esa carpeta).
+Guarda el crontab y sal (Ctrl + O, Enter, Ctrl + X en nano).
+
+¡Listo! Tus reportes ya están 100% automatizados.
+#################################################
+
+
+
+OPCIONAL: Esta configuración que se realiza para limpiar y reiniciar los servicios de docker de manera automática
+
+----------------------------------------------------------------------------------------
+#Ansible: T-Pot Daily Reboot
+52 7 * * * bash -c 'systemctl stop tpot.service && docker container prune -f; docker image prune -f; docker volume prune -f; /usr/sbin/shutdown -r +1 "T-Pot Daily Reboot"'
+-----------------------------------------------------------------------------------------
