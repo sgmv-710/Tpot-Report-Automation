@@ -342,7 +342,7 @@ Once you are familiar with how things work you should choose a network you suspe
 
 <br><br> 
 ## Get and install T-Pot
-1. Clone the GitHub repository: `$ git clone [https://github.com/sgmv-710/Tpot-Report-Automation.git]` or follow the [TL;DR](#tldr) and skip this section.
+1. Clone the GitHub repository: `$ git clone https://github.com/sgmv-710/Tpot-Report-Automation.git` or follow the [TL;DR](#tldr) and skip this section.
 2. Change into the **tpotce/** folder: `$ cd tpotce`
 3. Run the installer as non-root: `$ ./install.sh`:
    * ⚠️ ***Depending on your Linux distribution of choice the installer will:***
